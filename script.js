@@ -1,10 +1,27 @@
-//Project 01_06_02
+//Project 01_06_03
 //Author: Nathan Howard
 //Date: 8.15.18
 
 "use strict";
 
 var formValidity = true;
+
+//function to move the focus to the next SSN box
+function advanceSsn() {
+    var ssnFields = document.getElementsByClassName("ssn");
+    var currentField = document.activeElement;
+    if (currentField.value.length === currentField.maxLength) {
+        if (currentField === ssnFields[0]) {
+            ssnFields[1].focus();
+        }
+        if (currentField === ssnFields[1]) {
+            ssnFields[2].focus();
+        }
+        if (currentField === ssnFields[2]) {
+            document.getElementById("submitBtn").focus();
+        }
+    }
+}
 
 //remove fallback placeholder text
 function zeroPlaceholder() {
@@ -97,6 +114,15 @@ function setUpPage() {
 
 //function to load in eventlisteners
 function createEventListeners() {
+    var ssnFields = document.getElementsByClassName("ssn");
+    for (var i = 0; i < ssnFields.length; i++) {
+        if (ssnFields[i].addEventListener) {
+            ssnFields[i].addEventListener("input", advanceSsn, false);
+        }
+        else if (ssnFields[i].attachEvent) {
+            ssnFields[i].attachEvent("oninput", advanceSsn);
+        }
+    }
     if (window.addEventListener) {
     window.addEventListener("submit", validateForm, false);
     } else if (window.attachEvent) {
